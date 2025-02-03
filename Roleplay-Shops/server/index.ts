@@ -5,10 +5,10 @@ import * as Utility from '@Shared/utility/index.js';
 import { Db } from 'mongodb';
 import * as MoneyApi from '@Plugins/Roleplay-Core/server/apis/MoneyApi.js';
 import * as InventoryApi from '@Plugins/Roleplay-Core/server/apis/InventoryApi.js';
-import * as RPJobApi from '@Plugins/Roleplay-Core/server/apis/JobApi.js'; // Importiere JobApi
-import * as RPFoodApi from '@Plugins/Roleplay-Core/server/apis/FoodApi.js'; // Importiere FoodApi
-import * as RPVehiclesApi from '@Plugins/Roleplay-Core/server/apis/VehiclesApi.js'; // Importiere FoodApi
-import { config } from '@Plugins/Roleplay-Core/shared/config.js'; // Config importieren
+import * as RPJobApi from '@Plugins/Roleplay-Core/server/apis/JobApi.js'; 
+import * as RPFoodApi from '@Plugins/Roleplay-Core/server/apis/FoodApi.js'; 
+import * as RPVehiclesApi from '@Plugins/Roleplay-Core/server/apis/VehiclesApi.js'; 
+import { config } from '@Plugins/Roleplay-Core/shared/config.js'; 
 import { useVehicle } from '@Server/vehicle/index.js';
 import { Vehicle } from 'alt-server';
 import { MarkerType } from '@Shared/types/marker.js';
@@ -31,7 +31,7 @@ const getter = Rebar.get.usePlayerGetter();
 let isUpdatingPlayers = false;
 
 const api = Rebar.useApi();
-// Hole beide APIs
+
 const [moneyAPI, inventoryAPI, JobApi, VehicleAPI] = await Promise.all([
     api.getAsync('rebar-rp-money-api'),
     api.getAsync('rebar-rp-inventory-api'), 
@@ -39,7 +39,7 @@ const [moneyAPI, inventoryAPI, JobApi, VehicleAPI] = await Promise.all([
     api.getAsync('rebar-rp-vehicles-api')
 ]);
 
-// Kombiniere alle Funktionen beider APIs in ein einzelnes Objekt
+
 const esr = {
     ...moneyAPI,
     ...inventoryAPI,
@@ -77,18 +77,13 @@ Shops.forEach((shop) => {
 
 
 
-// Spawn des Peds mit der Rotation
 const shopPed = Rebar.controllers.usePed(
     new alt.Ped(shop.pedModel, new alt.Vector3(shop.position.x, shop.position.y, shop.position.z), new alt.Vector3(0, 0, shop.pedRot), 100)
 );
 
-    // Setzt das Ped so, dass es keine Reaktionen zeigt (optional)
+
     shopPed.setOption('makeStupid', true);
-
-    // Setzt das Ped unverwundbar (optional)
     shopPed.setOption('invincible', true);
-
-    // Optional: Lass das Ped eine Animation spielen
     shopPed.invoke(
         'taskPlayAnim',
         'anim@amb@nightclub@mini@dance@dance_solo@female@var_a@',
@@ -129,17 +124,17 @@ const shopPed = Rebar.controllers.usePed(
 
 
 
-//Shopfunktions 
+//Shopfunctions 
 
 const messenger = Rebar.messenger.useMessenger();
 
-// Befehl zum Hinzufügen von Geld zu einem Charakter
+
 const registerCommand = (name: string, desc: string, callback: Function, distanceType = 'normal') => {
     messenger.commands.register({
         name,
         desc,
         callback: async (player: alt.Player, ...args: string[]) => {
-            if (args.length < 2) return; // Mindestens 2 Argumente erforderlich
+            if (args.length < 2) return; 
             await callback(player, ...args);
         }
     });
@@ -203,7 +198,7 @@ alt.onClient('closeshop', ( player: alt.Player ) => {
 
     alt.onClient('purchaseItems', async (player, items, totalPrice, purchaseMethod) => {
         try {
-            // Logge die empfangenen Daten
+            
             alt.log(`[purchaseItems] Daten empfangen: ${JSON.stringify({ items, totalPrice, purchaseMethod })}`);
             
             
